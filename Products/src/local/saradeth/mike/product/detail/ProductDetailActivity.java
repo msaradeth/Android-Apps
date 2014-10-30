@@ -139,21 +139,11 @@ public class ProductDetailActivity extends Activity implements AlertDialogFragme
 		
 		//Update header - current record
 		updateHeader();
-		
-		
+				
     	//Draw from memory cache if exist else load product image from asset folder and cache
    		imageCache.drawImage(this, product.getImageUrl(), imageView); 		
-		
-/*    	//load product image from asset folder if available
-   		Drawable dr = loadImage(product.getImageUrl());
-   		if (dr != null) {
-   			image.setImageDrawable(dr);
-   		}else {
-   			image.setImageResource(R.drawable.ic_launcher);	//Filler Icon
-   		}   
-   		*/
-   		imageView.setOnClickListener(new OnClickListener() {
 
+   		imageView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -197,26 +187,7 @@ public class ProductDetailActivity extends Activity implements AlertDialogFragme
         });        		
 	}
 	
-	
-	//Load image from asset folder and save it in memory
-	public Drawable loadImage(String url) {
-		Drawable image = null;
-		
-   		if (url != null) {
-   	        try {
-   	            // get input stream
-   	            InputStream is = getAssets().open(url);
-   	            // load image as Drawable   	            
-   	         	image = Drawable.createFromStream(is, null);   	         	 	         	   	            
-   	        }
-   	        catch(IOException e) {
-   	            Log.d("ImageLoadAndCache", "I/O : " + e.getMessage());     
-   	        }    			  			
-   		} 	
-   		
-   		return image;
-	}	
-	
+
 	public void setUpRightDrawer() {
 
 		layoutInflater = LayoutInflater.from(this);
@@ -295,9 +266,7 @@ public class ProductDetailActivity extends Activity implements AlertDialogFragme
 		alProduct.remove(currRecord-1);//zero base array, subtract 1
 		aaProduct.notifyDataSetChanged();
 		
-		
-		//Load products array for right drawer
-		//alProduct = ProductDAO.loadProduct(this.getApplicationContext());
+		//reset current record
 		if (alProduct.size() > 0) {
 			//set new current record
 			if (currRecord > alProduct.size()) {
@@ -306,7 +275,7 @@ public class ProductDetailActivity extends Activity implements AlertDialogFragme
 			product = alProduct.get(currRecord-1);  //zero base array, subtract 1
 				
 		}else {
-			//Strike product name and make it red to indicate it has been delete.
+			//Strike product name and make it red to indicate it has been delete for last record deleted.
 			productName.setPaintFlags(productName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 			productName.setTextColor(Color.RED);
 			productDeleted = true;	
@@ -345,11 +314,7 @@ public class ProductDetailActivity extends Activity implements AlertDialogFragme
 	public String getColors(String[] colorsArray) {
 		String colors = "";
 
-   		if (colorsArray.length > 1) {
-   			colors = "colors:  ";
-   		}else {
-   			colors = "color:  ";
-   		}   		
+   		
    		for(int ii=0; ii<colorsArray.length; ii++) {   
    			if (colorsArray[ii] == null || colorsArray[ii].isEmpty() ) {
    				continue;
@@ -372,7 +337,7 @@ public class ProductDetailActivity extends Activity implements AlertDialogFragme
 		super.onActivityResult(requestCode, resultCode, data);
 	    if (requestCode == 1) {
 	        if(resultCode == RESULT_OK){
-	            //Update UI with new data
+	            //Update UI with updated data
 	        	int productId  = data.getIntExtra("ProductId", product.getProductId());
 	        	product = ProductDAO.loadProduct(getApplicationContext(), productId);
 	        	this.updateUI();	            
@@ -407,7 +372,7 @@ public class ProductDetailActivity extends Activity implements AlertDialogFragme
         	if (parent.getTag().toString().equalsIgnoreCase("right_drawer")) {
         		Log.i("right_drawer clicked", "row = " + id);	
         		product = alProduct.get(row);        		        	
-        		currRecord = row+1;  
+        		currRecord = row+1;  //zero base array, add 1 
         		rightDrawerLayout.closeDrawer(lvRightDrawer);
         		updateUI();
         	} 

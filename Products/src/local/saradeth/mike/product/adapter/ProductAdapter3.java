@@ -272,12 +272,7 @@ public class ProductAdapter3 extends BaseAdapter {
 	//Returns colors available for the product
 	public String getColors(String[] colorsArray) {
 		String colors = "";
-	
-   		if (colorsArray.length > 1) {
-   			colors = "colors:  ";
-   		}else {
-   			colors = "color:  ";
-   		}   		
+			
    		for(int ii=0; ii<colorsArray.length; ii++) {   	
    			if (ii==0) {
    				colors = colors + colorsArray[ii];

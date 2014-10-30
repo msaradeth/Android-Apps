@@ -118,7 +118,7 @@ public class ProductActivity extends Activity implements AlertDialogFragment.Ale
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
-		/////bug finish();
+	
 	}
 		
 }
